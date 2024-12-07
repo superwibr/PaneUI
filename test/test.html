@@ -13,6 +13,10 @@
 			padding: 0;
 		}
 
+		* {
+			box-sizing: border-box;
+		}
+
 		body {
 			display: grid;
 			grid-template-rows: 1fr;
@@ -22,13 +26,20 @@
 		}
 
 		#uicontainer {
-			aspect-ratio: 4/3;
-			width: calc(80vh * (4 / 3));
-			height: calc(80vw * (3 / 4));
+			aspect-ratio: 1/1;
+			width: calc(80vh * (1 / 1));
+			height: calc(80vw * (1 / 1));
 			max-width: 80vw;
 			max-height: 80vh;
 
 			border: 4px solid grey;
+
+			position: relative;
+		}
+
+		canvas {
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
 		}
 	</style>
 </head>
@@ -42,13 +53,15 @@
 		const container = document.querySelector("#uicontainer");
 		const canvas = container.querySelector("canvas");
 
-		const anvil = await Texture("./anvil.png");
+		const anvil = await Sheet("./anvil.png");
+
+		const background = anvil.texture(0, 0, 176, 110);
 
 		const gameUI = PaneUI({
 			canvas,
 			container,
-			width: 256,
-			height: 256,
+			width: 176,
+			height: 176,
 			layers: [
 				{
 					name: "background",
@@ -56,7 +69,16 @@
 					elements: [
 						{ 
 							name: "anvil",
-							texture: anvil 
+							texture: background,
+							
+						},
+						{
+							texture: anvil.texture(128, 224, 32, 32),
+							x: 53,
+							y: 50,
+							width: 16,
+
+							area: {}
 						}
 					]
 				}
