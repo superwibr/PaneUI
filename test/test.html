@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cudendum</title>
+
+	<style>
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			display: grid;
+			grid-template-rows: 1fr;
+			grid-template-columns: 1fr;
+			place-items: center;
+			height: 100vh;
+		}
+
+		#uicontainer {
+			aspect-ratio: 4/3;
+			width: calc(80vh * (4 / 3));
+			height: calc(80vw * (3 / 4));
+			max-width: 80vw;
+			max-height: 80vh;
+
+			border: 4px solid grey;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="uicontainer"><canvas></canvas></div>
+
+	<script type="module">
+		import { PaneUI, Texture, Sheet } from "../lib/PaneUI.js";
+
+		const container = document.querySelector("#uicontainer");
+		const canvas = container.querySelector("canvas");
+
+		const anvil = await Texture("./anvil.png");
+
+		const gameUI = PaneUI({
+			canvas,
+			container,
+			width: 256,
+			height: 256,
+			layers: [
+				{
+					name: "background",
+					type: "static",
+					elements: [
+						{ 
+							name: "anvil",
+							texture: anvil 
+						}
+					]
+				}
+			]
+		});
+
+		window.paneui = gameUI;
+	</script>
+</body>
+
+</html>
