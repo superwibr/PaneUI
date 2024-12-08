@@ -55,8 +55,6 @@
 
 		const anvil = await Sheet("./anvil.png");
 
-		const background = anvil.texture(0, 0, 176, 110);
-
 		const gameUI = PaneUI({
 			canvas,
 			container,
@@ -69,10 +67,11 @@
 					elements: [
 						{ 
 							name: "anvil",
-							texture: background,
+							texture: anvil.texture(0, 0, 176, 110),
 							
 						},
 						{
+							name: "light-hit",
 							texture: anvil.texture(128, 224, 32, 32),
 							x: 53,
 							y: 50,
@@ -81,9 +80,32 @@
 							area: {}
 						}
 					]
+				},
+				{
+					elements: [
+						{
+							name: "cursor-red",
+							texture: anvil.texture(176, 0, 5, 5),
+							x: 13,
+							y: 100,
+
+							enabled: true
+						}
+					]
 				}
 			]
 		});
+
+		const renderLoop = () => {
+			gameUI.render();
+			requestAnimationFrame(renderLoop);
+		};
+		renderLoop();
+
+		const targetCursor = gameUI.element("cursor-red");
+		const hammerArea = gameUI.element("light-hit").areaElement;
+
+		hammerArea.addEventListener("click", () => targetCursor.enabled = !targetCursor.enabled)
 
 		window.paneui = gameUI;
 	</script>
